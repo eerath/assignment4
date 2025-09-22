@@ -12,11 +12,11 @@ Number = Union[int, float]
 @pytest.mark.parametrize(
     "a, b, expected",
     
-    [ (2, 3, 5),            #Test adding two positive integers
-     (0, 0, 0),             #Test adding two zeros
-     (-1, 1, 0),            #Test adding one negative and one positive integer
-     (2.5, 3.5, 6.0),       #Test adding two positive floats
-     (-2.5, 3.5, 1.0), ],     #Test adding one negative float and one positive float
+    [ (2, 3, 5),                #Test adding two positive integers
+     (0, 0, 0),                 #Test adding two zeros
+     (-1, 1, 0),                #Test adding one negative and one positive integer
+     (2.5, 3.5, 6.0),           #Test adding two positive floats
+     (-2.5, 3.5, 1.0), ],       #Test adding one negative float and one positive float
      
      ids=[ "add_two_positive_integers",
           "add_two_zeros",
@@ -36,11 +36,11 @@ def test_addition(a: Number, b: Number, expected: Number) -> None:
 @pytest.mark.parametrize(
     "a, b, expected",
 
-    [ (5, 3, 2),            #Test subtracting two positive integers
-     (0, 0, 0),             #Test subtracting two zeros
-     (-5, -3, -2),          #Test subgracting two negative integers
-     (10.5, 5.5, 5.0),      #Test subtracting two positive floats
-     (-10.5, -5.5, -5.0), ], #Test subtracting two negative floats
+    [ (5, 3, 2),                #Test subtracting two positive integers
+     (0, 0, 0),                 #Test subtracting two zeros
+     (-5, -3, -2),              #Test subgracting two negative integers
+     (10.5, 5.5, 5.0),          #Test subtracting two positive floats
+     (-10.5, -5.5, -5.0), ],    #Test subtracting two negative floats
 
      ids=[ "subctract_two_positive_integers",
           "subtract_two_zeros",
@@ -53,3 +53,26 @@ def test_addition(a: Number, b: Number, expected: Number) -> None:
 def test_subtraction(a:Number, b:Number, expected: Number) -> None:
     result = Operations().subtraction(a, b)
     assert result == expected, f"Expected subtraction({a}, {b}) to be {expected}, but got {result}."
+
+#MULTIPLICATION
+#Create parametrized testing for multiplication
+@pytest.mark.parametrize(
+    "a, b, expected",
+
+    [ (2, 3, 6),                #Test multiplying two positive integers
+     (0, 10, 0),                #Test multiplying by zero
+     (-2, -3, 6),               #Test multiplying two negative integers
+     (2.5, 4.0, 10.0),          #Test multiplying two positive floats
+     (-2.5, 4.0, -10.0), ],     #Test multiplying one positive one negative float
+
+     ids=[ "multiply_two_positive_integers",
+          "multiply_by_zero",
+          "multiply_two_negative_integers",
+          "multiply_two_positive_floats",
+          "multiply_one_positive_one_negative_float"],
+)
+
+#Test multiplication operation
+def test_multiplication(a: Number, b:Number, expected:Number) -> None:
+    result = Operations.multiplication(a, b)
+    assert result == expected, f"Expected multiplication({a}, {b}) to be {expected}, but got {result}"
