@@ -26,7 +26,7 @@ Number = Union[int, float]
 )
 
 #Test addition operation
-def test_addition(a: Number, b: Number, expected: Number) -> None:
+def test_addition(a:Number, b:Number, expected:Number) -> None:
     result = Operations.addition(a, b)
     assert result == expected, f"Expected addition({a}, {b}) to be {expected}, but got {result}."
 
@@ -76,3 +76,49 @@ def test_subtraction(a:Number, b:Number, expected: Number) -> None:
 def test_multiplication(a: Number, b:Number, expected:Number) -> None:
     result = Operations.multiplication(a, b)
     assert result == expected, f"Expected multiplication({a}, {b}) to be {expected}, but got {result}"
+
+#DIVISION
+#Create parametrized testing for division
+@pytest.mark.parametrize(
+    "a, b, expected",
+
+    [ (6, 3, 2),                #Test dividing two positive integers
+     (-6, -3, 2),               #Test dividing two negative integers
+     (6.0, 3.0, 2.0),           #Test dividing two positive floats
+     (-6.0, 3.0, -2.0),         #Test dividing one positive one negative float
+     (0, 5, 0.0), ],            #Test dividing zero by positive integer
+
+     ids=[ "divide_two_positive_integers",
+          "divide_two_negative_integers",
+          "divive_two_positive_floats",
+          "divide_one_positive_one_negative_float",
+          "divide_zero_by_positive", ]
+)
+
+#Test division operation
+def test_division(a:Number, b:Number, expected:Number) -> None:
+    result = Operations.division(a, b)
+    assert result == expected, f"Expected division({a}, {b}) to be {expected}, but got {result}."
+
+#DIVISION BY ZERO
+#Create parametrized testing for division by zero
+
+@pytest.mark.parametrize(
+    "a, b",
+
+    [ (1, 0),               #Test dividing by zero with a positive integer
+     (-1, 0),               #Test dividing by zero with a negative integer
+     (0, 0), ],              #Test dividing zero by zero
+
+     ids=[ "divide_positive_by_zero",
+          "divide_negative_by_zero",
+          "divide_zero_by_zero", ]
+)
+
+#Test division by zero operation
+def test_division_by_zero(a:Number, b:Number) -> None:
+    with pytest.raises(ValueError, match="Division by zero is not allowed.") as excinfo:
+        Operations.division(a, b)
+
+    assert "Division by zero is not allowed." in str(excinfo.value), \
+        f"Expected error message 'Division by zero is not allowed.', but got {excinfo.value}."
