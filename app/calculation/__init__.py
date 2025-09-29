@@ -46,3 +46,23 @@ class CalculationFactory:
             raise ValueError(f"Unsupported calculation type: '{calculation_type}'. Available types: '{available_types}")
         return calculation_class(a, b)
     
+# Add concrete classes for Calculation types
+@CalculationFactory.register_calculation('add')         # Addition
+class AddCalculation(Calculation):
+    def execute(self) -> float:
+        return Operation.addition(self.a, self.b)
+
+@CalculationFactory.register_calculation('subtract')    # Subtraction
+class SubtractCalculation(Calculation):
+    def execute(self) -> float:
+        return Operation.subtraction(self.a, self.b)
+    
+@CalculationFactory.register_calculation('multiply')    # Multiplication
+def execute(self) -> float:
+    return Operation.multiplication(self.a, self.b)
+
+@CalculationFactory.register_calculation('divie')       # Division
+def execute(self) -> float:
+    if self.b == 0:
+        raise ZeroDivisionError("Cannot divide by zero.")
+    return Operation.division(self.a, self.b)
