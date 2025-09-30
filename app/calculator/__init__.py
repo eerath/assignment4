@@ -40,7 +40,7 @@ def display_history(history: List[Calculation]) -> None:
     else:
         print("Calculation History:")
         for idx, calculation in enumerate(history, start=1):
-            print(f"{idx}, {calculation}")
+            print(f"{idx}. {calculation}")
 
 # Calculator function
 def calculator() -> None:
@@ -73,7 +73,7 @@ def calculator() -> None:
                 num1: float = float(num1_str)
                 num2: float = float(num2_str)
             except ValueError:
-                print("Invalid input. Please follow the format: <opreation> <num1> <num2>")
+                print("Invalid input. Please follow the format: <operation> <num1> <num2>")
                 print("Type 'help' for more information.\n")
                 continue
 

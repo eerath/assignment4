@@ -10,14 +10,14 @@ class Calculation(ABC):
         self.a: float = a
         self.b: float = b
 
-        @abstractmethod
-        def execute(self) -> float: 
+    @abstractmethod
+    def execute(self) -> float: 
             pass
-        def __str__(self) -> str:
+    def __str__(self) -> str:
             result = self.execute()
             operation_name = self.__class__.__name__.replace('Calculation', '')
             return f"{self.__class__.__name__}: {self.a} {operation_name} {self.b} = {result}"
-        def __repr__(self) -> str:
+    def __repr__(self) -> str:
             return f"{self.__class__.__name__}(a={self.a}, b={self.b})"
 
 # Create calculation factory class
@@ -62,7 +62,7 @@ class MultiplyCalculation(Calculation):
     def execute(self) -> float:
         return Operations.multiplication(self.a, self.b)
 
-@CalculationFactory.register_calculation('divie')       # Division
+@CalculationFactory.register_calculation('divide')       # Division
 class DivideCalculation(Calculation):
     def execute(self) -> float:
         if self.b == 0:
