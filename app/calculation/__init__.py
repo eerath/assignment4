@@ -12,13 +12,13 @@ class Calculation(ABC):
 
     @abstractmethod
     def execute(self) -> float: 
-            pass
+        pass
     def __str__(self) -> str:
-            result = self.execute()
-            operation_name = self.__class__.__name__.replace('Calculation', '')
-            return f"{self.__class__.__name__}: {self.a} {operation_name} {self.b} = {result}"
+        result = self.execute()
+        operation_name = self.__class__.__name__.replace('Calculation', '')
+        return f"{self.__class__.__name__}: {self.a} {operation_name} {self.b} = {result}"
     def __repr__(self) -> str:
-            return f"{self.__class__.__name__}(a={self.a}, b={self.b})"
+        return f"{self.__class__.__name__}(a={self.a}, b={self.b})"
 
 # Create calculation factory class
 class CalculationFactory:
