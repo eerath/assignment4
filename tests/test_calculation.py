@@ -131,3 +131,15 @@ def test_divide_calculation_execute_negative(mock_division):
     # Assert
     assert str(exc_info.value) == "Division error"
 
+# Division with error for dividing by zero
+def test_divide_calculation_execute_division_by_zero():
+    # Arrange
+    a = 10.0
+    b = 0.0
+    divide_calc = DivideCalculation(a, b)
+    # Act
+    with pytest.raises(ZeroDivisionError) as exc_info:
+        divide_calc.execute()
+    # Assert
+    assert str(exc_info.value) == "Cannot divide by zero."
+
