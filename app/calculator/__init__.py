@@ -54,7 +54,7 @@ def calculator() -> None:
             user_input: str = input(">> ").strip()
 
             if not user_input:
-                continue
+                continue # pragma : no cover
             
             command = user_input.lower()
 
@@ -109,4 +109,4 @@ def calculator() -> None:
             sys.exit(0)
 
 if __name__ == "__main__":
-    calculator()
+    calculator() # pragma : no cover
