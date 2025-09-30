@@ -2,7 +2,7 @@
 
 # Import abstract method and operations 
 from abc import ABC, abstractmethod 
-from app.operations import Operation
+from app.operations import Operations
 
 # Create calculation class with ABC abstract method
 class Calculation(ABC):
@@ -39,10 +39,10 @@ class CalculationFactory:
     @classmethod
     def create_calculation(cls, calculation_type: str, a: float, b: float) -> Calculation:
         calculation_type_lower = calculation_type.lower()
-        calculation_class = cls.calculations.get(calculation_type_lower)
+        calculation_class = cls._calculations.get(calculation_type_lower)
 
         if not calculation_class:
-            available_types = ', '.join(cls._calculation_.keys())
+            available_types = ', '.join(cls._calculations.keys())
             raise ValueError(f"Unsupported calculation type: '{calculation_type}'. Available types: '{available_types}")
         return calculation_class(a, b)
     
@@ -50,19 +50,21 @@ class CalculationFactory:
 @CalculationFactory.register_calculation('add')         # Addition
 class AddCalculation(Calculation):
     def execute(self) -> float:
-        return Operation.addition(self.a, self.b)
+        return Operations.addition(self.a, self.b)
 
 @CalculationFactory.register_calculation('subtract')    # Subtraction
 class SubtractCalculation(Calculation):
     def execute(self) -> float:
-        return Operation.subtraction(self.a, self.b)
+        return Operations.subtraction(self.a, self.b)
     
 @CalculationFactory.register_calculation('multiply')    # Multiplication
-def execute(self) -> float:
-    return Operation.multiplication(self.a, self.b)
+class MultiplyCalculation(Calculation):
+    def execute(self) -> float:
+        return Operations.multiplication(self.a, self.b)
 
 @CalculationFactory.register_calculation('divie')       # Division
-def execute(self) -> float:
-    if self.b == 0:
-        raise ZeroDivisionError("Cannot divide by zero.")
-    return Operation.division(self.a, self.b)
+class DivideCalculation(Calculation):
+    def execute(self) -> float:
+        if self.b == 0:
+            raise ZeroDivisionError("Cannot divide by zero.")
+        return Operations.division(self.a, self.b)
