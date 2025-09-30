@@ -73,3 +73,61 @@ def test_subtract_calculation_execute_negative(mock_subtraction):
     #Assert
     assert str(exc_info.value) == "Subtraction error"
 
+# Multiplication with positive scenario
+@patch.object(Operations, 'multiplication')
+def test_multiply_calculation_execute_positive(mock_multiplication):
+    # Arrange
+    a = 10.0
+    b = 5.0
+    expected_result = 50.0
+    mock_multiplication.return_value = expected_result
+    multiply_calc = MultiplyCalculation(a, b)
+    # Act
+    result = multiply_calc.execute()
+    # Assert
+    mock_multiplication.assert_called_once_with(a, b)
+    assert result == expected_result
+
+# Multiplication with negative scenario
+@patch.object(Operations, 'multiplication')
+def test_multiply_calculation_execute_negative(mock_multiplication):
+    # Arrange
+    a = 10.0
+    b = 5.0
+    mock_multiplication.side_effect = Exception("Multiplication error")
+    multiply_calc = MultiplyCalculation(a, b)
+    # Act
+    with pytest.raises(Exception) as exc_info:
+        multiply_calc.execute()
+    # Assert
+    assert str(exc_info.value) == "Multiplication error"
+
+# Division with positive scenario
+@patch.object(Operations, 'division')
+def test_divide_calculation_execute_positive(mock_division):
+    # Arrange
+    a = 10.0
+    b = 5.0
+    expected_result = 2.0
+    mock_division.return_value = expected_result
+    divide_calc = DivideCalculation(a, b)
+    # Act
+    result = divide_calc.execute()
+    # Assert
+    mock_division.assert_called_once_with(a, b)
+    assert result == expected_result
+
+# Division with negative scenario
+@patch.object(Operations, 'division')
+def test_divide_calculation_execute_negative(mock_division):
+    # Arrange
+    a = 10.0
+    b = 5.0
+    mock_division.side_effect = Exception("Division error")
+    divide_calc = DivideCalculation(a, b)
+    # Act
+    with pytest.raises(Exception) as exc_info:
+        divide_calc.execute()
+    # Assert
+    assert str(exc_info.value) == "Division error"
+
