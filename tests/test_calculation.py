@@ -143,3 +143,52 @@ def test_divide_calculation_execute_division_by_zero():
     # Assert
     assert str(exc_info.value) == "Cannot divide by zero."
 
+# Test CalculationFactory
+def test_factory_creates_add_calculation():
+    a = 10.0
+    b = 5.0
+    calc = CalculationFactory.create_calculation('add', a, b)
+    assert isinstance(calc, AddCalculation)
+    assert calc.a == a
+    assert calc.b == b
+
+def test_factory_creates_subtract_calculation():
+    a = 10.0
+    b = 5.0
+    calc = CalculationFactory.create_calculation('subtract', a, b)
+    assert isinstance(calc, SubtractCalculation)
+    assert calc.a == a
+    assert calc.b == b
+
+def test_factory_create_multiply_calculation():
+    a = 10.0
+    b = 5.0
+    calc = CalculationFactory.create_calculation('multiply', a, b)
+    assert isinstance(calc, MultiplyCalculation)
+    assert calc.a == a
+    assert calc.b == b
+
+def test_factory_creates_divide_calculation():
+    a = 10.0
+    b = 5.0
+    calc = CalculationFactory.create_calculation('divide', a, b)
+    assert isinstance(calc, DivideCalculation)
+    assert calc.a == a
+    assert calc.b == b
+
+def test_factory_create_unsupported_calculation():
+    a = 10.0
+    b = 5.0
+    unsupported_type = 'modulus'
+    with pytest.raises(ValueError) as exc_info:
+        CalculationFactory.create_calculation(unsupported_type, a, b)
+        assert f"Unsupported calculation type: '{unsupported_type, a, b}'" in str(exc_info.value)
+
+def test_factory_register_calculation_duplicate():
+    with pytest.raises(ValueError) as exc_info:
+        @CalculationFactory.register_calculation('add')
+        class AnotherAddCalculation(Calculation):
+            def execute(self) -> float:
+                return Operations.addition(self.a, self.b)
+    assert "Calculation type 'add' is already registered." in str(exc_info.value)
+
