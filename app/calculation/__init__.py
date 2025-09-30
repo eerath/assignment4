@@ -12,7 +12,7 @@ class Calculation(ABC):
 
     @abstractmethod
     def execute(self) -> float: 
-        pass # pragma : no cover
+        pass # pragma: no cover
     def __str__(self) -> str:
         result = self.execute()
         operation_name = self.__class__.__name__.replace('Calculation', '')
