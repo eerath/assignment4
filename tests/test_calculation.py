@@ -192,3 +192,111 @@ def test_factory_register_calculation_duplicate():
                 return Operations.addition(self.a, self.b)
     assert "Calculation type 'add' is already registered." in str(exc_info.value)
 
+# Test string representations for instances are formatted correctly
+@patch.object(Operations, 'addition', return_value=15.0)
+def test_calculation_str_representation_addition(mock_addition):
+    a = 10.0
+    b = 5.0
+    add_calc = AddCalculation(a, b)
+    calc_str = str(add_calc)
+    expected_str = f"{add_calc.__class__.__name__}: {a} Add {b} = 15.0"
+    assert calc_str == expected_str
+
+@patch.object(Operations, 'subtraction', return_value=5.0)
+def test_calculation_str_representation_subtraction(mock_subtraction):
+    a = 10.0
+    b = 5.0
+    subtract_calc = SubtractCalculation(a, b)
+    calc_str = str(subtract_calc)
+    expected_str = f"{subtract_calc.__class__.__name__}: {a} Subtract {b} = 5.0"
+    assert calc_str == expected_str
+
+@patch.object(Operations, 'multiplication', return_value=50.0)
+def test_calculation_str_representation_multiplication(mock_multiplication):
+    a = 10.0
+    b = 5.0
+    multiply_calc = MultiplyCalculation(a, b)
+    calc_str = str(multiply_calc)
+    expected_str = f"{multiply_calc.__class__.__name__}: {a} Multiply {b} = 50.0"
+    assert calc_str == expected_str
+
+@patch.object(Operations, 'division', return_value=2.0)
+def test_calculation_str_representation_division(mock_division):
+    a = 10.0
+    b = 5.0
+    divide_calc = DivideCalculation(a, b)
+    calc_str = str(divide_calc)
+    expected_str = f"{divide_calc.__class__.__name__}: {a} Divide {b} = 2.0"
+    assert calc_str == expected_str
+
+def test_calculation_repr_representation_subtraction():
+    a = 10.0
+    b = 5.0
+    subtract_calc = SubtractCalculation(a, b)
+    calc_repr = repr(subtract_calc)
+    expected_repr = f"{SubtractCalculation.__name__}(a={a}, b={b})"
+    assert calc_repr == expected_repr
+
+def test_calculation_repr_representation_division():
+    a = 10.0
+    b = 5.0
+    divide_calc = DivideCalculation(a, b)
+    calc_repr = repr(divide_calc)
+    expected_repr = f"{DivideCalculation.__name__}(a={a}, b={b})"
+    assert calc_repr == expected_repr
+
+# Parametrized tests for Execute method
+@pytest.mark.parametrize("calc_type, a, b, expected_result", [
+    ('add', 10.0, 5.0, 15.0),
+    ('subtract', 10.0, 5.0, 5.0),
+    ('multiply', 10.0, 5.0, 50.0),
+    ('divide', 10.0, 5.0, 2.0),
+])
+@patch.object(Operations, 'addition')
+@patch.object(Operations, 'subtraction')
+@patch.object(Operations, 'multiplication')
+@patch.object(Operations, 'division')
+def test_calculation_execute_parameterized(
+    mock_division, mock_multiplication, mock_subtraction, mock_addition,
+    calc_type, a, b, expected_result):
+    # Arrange
+    if calc_type == 'add':
+        mock_addition.return_value = expected_result
+    elif calc_type == 'subtract':
+        mock_subtraction.return_value = expected_result
+    elif calc_type == 'multiply':
+        mock_multiplication.return_value = expected_result
+    elif calc_type == 'divide':
+        mock_division.return_value = expected_result
+    # Act
+    calc = CalculationFactory.create_calculation(calc_type, a, b)
+    result = calc.execute()
+    # Assert
+    if calc_type == 'add':
+        mock_addition.assert_called_once_with(a, b)
+    elif calc_type == 'subtract':
+        mock_subtraction.assert_called_once_with(a, b)
+    elif calc_type == 'multiply':
+        mock_multiplication.assert_called_once_with(a, b)
+    elif calc_type == 'divide':
+        mock_division.assert_called_once_with(a, b)
+
+    assert result == expected_result
+
+# Parametrized tests for String representation
+@pytest.mark.parametrize("calc_type, a, b, expected_str", [
+    ('add', 10.0, 5.0, "AddCalculation: 10.0 Add 5.0 = 15.0"),
+    ('subtract', 10.0, 5.0, "SubtractCalculation: 10.0 Subtract 5.0 = 5.0"),
+    ('multiply', 10.0, 5.0, "MultiplyCalculation: 10.0 Multiply 5.0 = 50.0"),
+    ('divide', 10.0, 5.0, "DivideCalculation: 10.0 Divide 5.0 = 2.0"),
+])
+@patch.object(Operations, 'addition', return_value=15.0)
+@patch.object(Operations, 'subtraction', return_value=5.0)
+@patch.object(Operations, 'multiplication', return_value=50.0)
+@patch.object(Operations, 'division', return_value=2.0)
+def test_calculation_str_parameterized(
+    mock_division, mock_multiplication, mock_subtraction, mock_addition,
+    calc_type, a, b, expected_str):
+    calc = CalculationFactory.create_calculation(calc_type, a, b)
+    calc_str = str(calc)
+    assert calc_str == expected_str
